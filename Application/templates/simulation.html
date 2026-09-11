@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block heading %}Simulations{% endblock %}
+{% block content %}
+<section class="page-intro"><div><span class="eyebrow">SIMULATION CONSOLE</span><h2>Select a scenario</h2><p>Choose a message scenario and open it locally or deliver it to your configured test mailbox.</p></div></section>
+<form method="post" action="{{ url_for('simulation_start') }}">
+  <div class="scenario-grid">
+    {% for key,s in scenarios.items() %}
+    <label class="scenario-card">
+      <input type="radio" name="scenario" value="{{ key }}" {% if loop.first %}checked{% endif %}>
+      <div class="scenario-body"><span class="scenario-icon">{{ s.icon }}</span><div><h3>{{ s.name }}</h3><small>{{ s.category }}</small><p>{{ s.preview }}</p><div class="scenario-meta"><span>{{ s.phishing_type }}</span><strong>{{ s.urgency }}</strong></div></div></div>
+    </label>
+    {% endfor %}
+  </div>
+  <section class="card launch-panel">
+    <div><span class="eyebrow">DELIVERY</span><h3>Choose how to open the message</h3><p>Local Preview opens immediately. SMTP sends only to the authorized recipient configured in this project.</p></div>
+    <div class="mode-row"><label><input type="radio" name="mode" value="preview" checked onclick="toggleRecipient(false)"> Local Preview</label><label><input type="radio" name="mode" value="smtp" onclick="toggleRecipient(true)"> SMTP</label></div>
+    <div id="recipientWrap" class="recipient-wrap" hidden><label for="recipient">Authorized recipient email</label><input id="recipient" class="input" type="email" name="recipient" disabled placeholder="your-own-test-email@example.com"><small>Configured recipient: {{ smtp_allowed or 'not configured' }}</small></div>
+    <div class="launch-actions"><button class="btn primary" type="submit">Continue</button><a class="btn secondary" href="{{ url_for('dashboard') }}">View Event Dashboard</a></div>
+    {% if not smtp_ready %}<div class="notice">SMTP is not configured. Local Preview is ready to use.</div>{% endif %}
+  </section>
+</form>
+<script>
+function toggleRecipient(on){const wrap=document.getElementById('recipientWrap');const input=document.getElementById('recipient');wrap.hidden=!on;input.disabled=!on;input.required=on;if(!on)input.value='';}
+</script>
+{% endblock %}

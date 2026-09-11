@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block heading %}Security Analysis{% endblock %}
+{% block content %}
+<section class="result-hero">
+  <div class="result-symbol">!</div>
+  <div><span class="eyebrow">POST-SUBMISSION ANALYSIS</span><h2>This was a phishing attempt</h2><p>The message used a {{ scenario.phishing_type }} technique. The details below show why the interaction should be treated as suspicious.</p></div>
+</section>
+<div class="grid two">
+  <section class="card">
+    <span class="eyebrow">ATTACK TYPE</span><h3>{{ scenario.phishing_type }}</h3><p>{{ scenario.name }} uses a believable pretext to encourage a user to follow a message link and continue to a sign-in page.</p>
+    <h4>Indicators in this scenario</h4>
+    <div class="indicator-list">{% for item in scenario.indicators %}<div><span>•</span>{{ item }}</div>{% endfor %}</div>
+  </section>
+  <section class="card">
+    <span class="eyebrow">SUBMITTED INFORMATION</span><h3>What the simulated collection point received</h3>
+    {% if submission %}
+    <div class="detail-grid">
+      <div><span>Username</span><strong>{{ submission.username }}</strong></div>
+      <div><span>Password</span><strong>{{ submission.password }}</strong></div>
+      <div><span>Time</span><strong>{{ submission.created_at }}</strong></div>
+      <div><span>IP Address</span><strong>{{ submission.ip }}</strong></div>
+      <div><span>Browser</span><strong>{{ submission.user_agent }}</strong></div>
+    </div>
+    {% else %}<p>No submission was found for this session.</p>{% endif %}
+  </section>
+</div>
+<section class="card">
+  <span class="eyebrow">WHY IT LOOKED GENUINE</span>
+  <h3>Social-engineering techniques used</h3>
+  <ol class="explain-list">
+    <li><strong>Pretext:</strong> the sender provides a reason that sounds relevant to the recipient.</li>
+    <li><strong>Pressure:</strong> urgency, billing, deadlines or security language can reduce careful verification.</li>
+    <li><strong>Lure:</strong> a prominent action button makes the next step feel routine.</li>
+    <li><strong>Credential request:</strong> the destination asks for information that should not be entered through an unexpected message link.</li>
+  </ol>
+  <div class="result-actions"><a class="btn primary" href="{{ url_for('dashboard') }}">View Dashboard</a><a class="btn secondary" href="{{ url_for('simulation') }}">Run Another Scenario</a></div>
+</section>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block heading %}Event Dashboard{% endblock %}
+{% block content %}
+<section class="stats-grid">
+  <div class="stat"><span>Emails Opened</span><b>{{ stats.emails_opened }}</b></div>
+  <div class="stat"><span>Links Clicked</span><b>{{ stats.links_clicked }}</b></div>
+  <div class="stat"><span>Submission Attempts</span><b>{{ stats.submissions }}</b></div>
+  <div class="stat"><span>Total Events</span><b>{{ events|length }}</b></div>
+</section>
+<section class="card report-panel">
+  <div><span class="eyebrow">REPORTING</span><h3>Generate and export details</h3><p>Reports contain simulation activity. Spreadsheet exports contain the submitted controlled test values.</p></div>
+  <div class="actions"><a class="btn primary" href="{{ url_for('export_report') }}">Generate Report</a><a class="btn secondary" href="{{ url_for('export_csv') }}">CSV</a><a class="btn secondary" href="{{ url_for('export_excel') }}">View Details in Excel</a><form method="post" action="{{ url_for('clear_data') }}"><button class="btn danger-btn" onclick="return confirm('Delete all local simulation records?')">Clear Data</button></form></div>
+</section>
+<div class="grid two">
+  <section class="card"><span class="eyebrow">EVENT FLOW</span><h3>Recent activity</h3><div class="flow"><div><i></i><span>Email opened</span><b>{{ stats.emails_opened }}</b></div><div><i></i><span>Link clicked</span><b>{{ stats.links_clicked }}</b></div><div><i></i><span>Credential submitted</span><b>{{ stats.submissions }}</b></div></div></section>
+  <section class="card"><span class="eyebrow">SCENARIOS</span><h3>Submission count</h3><div class="mini-list">{% for x in stats.scenario_counts %}<div><span>{{ scenarios[x.scenario].name if x.scenario in scenarios else x.scenario }}</span><b>{{ x.count }}</b></div>{% else %}<div>No submissions recorded.</div>{% endfor %}</div></section>
+</div>
+<section class="card">
+  <div class="card-head"><div><span class="eyebrow">RECORDED DETAILS</span><h3>Simulation events</h3></div></div>
+  <div class="table-wrap"><table><thead><tr><th>Time</th><th>Scenario</th><th>Event</th><th>Username</th><th>Password</th><th>IP</th></tr></thead><tbody>
+  {% for e in events %}<tr><td>{{ e.created_at }}</td><td>{{ scenarios[e.scenario].name if e.scenario in scenarios else e.scenario }}</td><td>{{ e.event_type.replace('_',' ') }}</td><td>{{ e.username or '—' }}</td><td>{{ e.password or '—' }}</td><td>{{ e.ip }}</td></tr>{% else %}<tr><td colspan="6" class="empty">No recorded activity yet.</td></tr>{% endfor %}
+  </tbody></table></div>
+</section>
+{% endblock %}

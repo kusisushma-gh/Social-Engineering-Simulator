@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block heading %}Dashboard{% endblock %}
+{% block content %}
+<section class="hero">
+  <div>
+    <div class="hero-kicker">SECURITY OPERATIONS CONSOLE</div>
+    <h2>Social Engineering Simulator</h2>
+    <p>Review message scenarios, launch controlled simulations, inspect interaction events and generate campaign reports from one interface.</p>
+    <div class="hero-actions"><a class="btn primary" href="{{ url_for('simulation') }}">Open Simulations</a><a class="btn secondary" href="{{ url_for('project_info') }}">Project Info</a></div>
+  </div>
+  <div class="hero-panel"><div class="hero-code">SESSION<br><b>READY</b></div><div class="hero-lines"></div></div>
+</section>
+<section class="stats-grid">
+  <div class="stat"><span>Emails Opened</span><b>{{ stats.emails_opened }}</b></div>
+  <div class="stat"><span>Links Clicked</span><b>{{ stats.links_clicked }}</b></div>
+  <div class="stat"><span>Submission Attempts</span><b>{{ stats.submissions }}</b></div>
+  <div class="stat"><span>Tracked Events</span><b>{{ stats.emails_opened + stats.links_clicked + stats.submissions }}</b></div>
+</section>
+<div class="grid two">
+  <section class="card">
+    <div class="card-head"><div><span class="eyebrow">SCENARIO LIBRARY</span><h3>Message scenarios</h3></div><a href="{{ url_for('simulation') }}">View all</a></div>
+    <div class="template-grid">
+      {% for key,s in scenarios.items() %}
+      <a class="template" href="{{ url_for('email_preview', scenario=key) }}"><span class="template-icon">{{ s.icon }}</span><div><b>{{ s.name }}</b><small>{{ s.category }} · {{ s.phishing_type }}</small></div><span class="arrow">→</span></a>
+      {% endfor %}
+    </div>
+  </section>
+  <section class="card">
+    <div class="card-head"><div><span class="eyebrow">ANALYSIS</span><h3>URL analysis</h3></div></div>
+    <p>Inspect a URL for common structural warning signs such as shorteners, credential keywords and suspicious host patterns.</p>
+    <a class="btn secondary" href="{{ url_for('detection') }}">Open URL Analysis</a>
+    <div class="checks"><span>✓ Host inspection</span><span>✓ URL-shortener detection</span><span>✓ Credential keyword analysis</span><span>✓ Protocol inspection</span></div>
+  </section>
+</div>
+{% endblock %}

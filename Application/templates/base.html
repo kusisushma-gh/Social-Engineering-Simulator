@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ project.name }}{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">S</div>
+      <div><strong>Social Engineering</strong><span>Simulator</span></div>
+    </div>
+    <nav>
+      <a class="nav-item {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('index') }}"><span>⌂</span> Dashboard</a>
+      <a class="nav-item {% if request.endpoint in ['simulation','simulation_start','email_preview','click_link','phishing_page','capture','reveal'] %}active{% endif %}" href="{{ url_for('simulation') }}"><span>✉</span> Simulations</a>
+      <a class="nav-item {% if request.endpoint == 'detection' %}active{% endif %}" href="{{ url_for('detection') }}"><span>⌕</span> URL Analysis</a>
+      <a class="nav-item {% if request.endpoint == 'dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}"><span>▦</span> Event Dashboard</a>
+      <a class="nav-item {% if request.endpoint == 'project_info' %}active{% endif %}" href="{{ url_for('project_info') }}"><span>ⓘ</span> Project Info</a>
+    </nav>
+    <div class="sidebar-foot">{{ project.company }}</div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <div><span class="eyebrow">SOCIAL ENGINEERING SIMULATOR</span><h1>{% block heading %}Dashboard{% endblock %}</h1></div>
+      <div class="status"><i></i> System Ready</div>
+    </header>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block heading %}Message{% endblock %}
+{% block content %}
+<div class="mail-shell">
+  <div class="mail-toolbar"><span>Inbox</span><span>Today</span></div>
+  <article class="email-card">
+    <header class="mail-head">
+      <div class="mail-avatar">{{ scenario.icon }}</div>
+      <div><strong>{{ scenario.sender_name }}</strong><span>{{ scenario.sender }}</span></div>
+      <div class="mail-urgency">{{ scenario.urgency }}</div>
+    </header>
+    <div class="mail-subject"><h2>{{ scenario.subject }}</h2><p>Received today · To: account holder</p></div>
+    <div class="mail-content">
+      <p>Hello,</p>
+      {% for paragraph in scenario.body %}<p>{{ paragraph }}</p>{% endfor %}
+      <div class="mail-info"><span>Reference</span><strong>{{ scenario.brand[:3]|upper }}-{{ range(100000,999999)|random }}</strong></div>
+      <p>{{ scenario.preview }}</p>
+      <a class="mail-cta" href="{{ url_for('click_link', scenario=scenario_key, sid=session.get('simulation_id')) }}">{{ scenario.cta }}</a>
+      <p class="mail-small">If you did not request this message, review the request through your normal service channel.</p>
+      <p>Regards,<br><strong>{{ scenario.sender_name }}</strong></p>
+    </div>
+    <footer class="mail-foot">{{ scenario.brand }} · Service Desk · Privacy · Contact</footer>
+  </article>
+</div>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block heading %}URL Analysis{% endblock %}
+{% block content %}
+<section class="card detector"><span class="eyebrow">URL ANALYSIS</span><h2>Inspect a URL</h2><p>Check the structure of a URL for common warning signs.</p><div class="detector-row"><input id="urlInput" class="input" value="http://nexasecure-support.example/verify-account"><button class="btn primary" onclick="analyzeUrl()">Analyze</button></div><div id="analysis" class="analysis hidden"></div></section>
+<script>
+async function analyzeUrl(){const input=document.getElementById('urlInput').value;const box=document.getElementById('analysis');box.classList.remove('hidden');box.innerHTML='<p>Analyzing…</p>';const r=await fetch('{{ url_for("analyze") }}',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:input})});const d=await r.json();box.innerHTML='<h3>Risk Level: '+d.level+'</h3><ul>'+d.findings.map(x=>'<li>'+x+'</li>').join('')+'</ul>';}
+</script>
+{% endblock %}
