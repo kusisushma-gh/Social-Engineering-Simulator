@@ -164,6 +164,4 @@ Never publish real credentials, API keys, SMTP passwords, `.env` files, database
 
 ## License
 
-## License
-
 This project is licensed under the MIT License.
